@@ -72,7 +72,7 @@
     .nav-logo {
       font-size: 1.1rem; font-weight: 700;
       background: linear-gradient(135deg, var(--teal), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
@@ -82,6 +82,94 @@
     .nav-links a:hover { color: var(--teal); text-decoration: none; }
 
     @media (max-width: 640px) { .nav-links { display: none; } }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding-top: 80px;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridShift 20s linear infinite;
+    }
+    @keyframes gridShift {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; text-align: center; }
+    .hero-greeting {
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 3px;
+      color: var(--teal); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .hero-name {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, var(--teal) 50%, var(--gold) 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .hero-typewriter {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400; color: var(--muted);
+      min-height: 2rem; margin-bottom: 28px;
+    }
+    .hero-typewriter .cursor {
+      display: inline-block; width: 2px; height: 1.2em;
+      background: var(--teal); margin-left: 3px;
+      vertical-align: middle; animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    .hero-badges {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 40px;
+    }
+    .badge {
+      padding: 6px 16px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--teal-dim); color: var(--teal);
+    }
+    .badge.gold {
+      border-color: rgba(240,192,64,0.3);
+      background: var(--gold-dim); color: var(--gold);
+    }
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), #0099cc);
+      color: #0a0f1e;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.35); text-decoration: none; color: #0a0f1e; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); text-decoration: none; }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: 0.8rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
   </style>
 </head>
 <body>
@@ -100,6 +188,36 @@
     </div>
   </nav>
 
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <p class="hero-greeting">👋 Hi, I'm</p>
+      <h1 class="hero-name">Sriram Ganeshalingam</h1>
+      <p class="hero-typewriter">
+        <span id="typewriter-text"></span><span class="cursor"></span>
+      </p>
+      <div class="hero-badges">
+        <span class="badge"><i class="fa-solid fa-graduation-cap"></i> MS @ UT Dallas</span>
+        <span class="badge gold"><i class="fa-solid fa-star"></i> GPA 3.92</span>
+        <span class="badge gold"><i class="fa-solid fa-award"></i> Dean's Excellence Scholar</span>
+      </div>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="https://www.linkedin.com/in/sriram-ganeshalingam" target="_blank">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+        <a class="btn btn-outline" href="mailto:sriram.ganeshalingam@utdallas.edu">
+          <i class="fa-solid fa-envelope"></i> Email Me
+        </a>
+        <a class="btn btn-outline" href="#projects">
+          <i class="fa-solid fa-code"></i> View Projects
+        </a>
+      </div>
+    </div>
+    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i></div>
+  </section>
+
   <!-- SECTIONS WILL BE ADDED IN SUBSEQUENT TASKS -->
 
   <script>
@@ -108,6 +226,7 @@
       (entries) => entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
+          observer.unobserve(e.target);
           e.target.querySelectorAll('.skill-fill').forEach(bar => {
             bar.style.width = getComputedStyle(bar).getPropertyValue('--w').trim();
           });
@@ -116,6 +235,20 @@
       { threshold: 0.1 }
     );
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Typewriter
+    const roles = ['Data Analyst', 'ML Engineer', 'BI Specialist', 'Data Scientist', 'Analytics Engineer'];
+    let ri = 0, ci = 0, deleting = false;
+    const tw = document.getElementById('typewriter-text');
+    function type() {
+      const word = roles[ri];
+      tw.textContent = deleting ? word.slice(0, ci--) : word.slice(0, ci++);
+      let delay = deleting ? 60 : 100;
+      if (!deleting && ci > word.length) { delay = 1800; deleting = true; }
+      if (deleting && ci < 0) { deleting = false; ri = (ri + 1) % roles.length; ci = 0; delay = 300; }
+      setTimeout(type, delay);
+    }
+    type();
   </script>
 </body>
 </html>
