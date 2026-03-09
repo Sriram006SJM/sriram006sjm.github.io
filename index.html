@@ -230,8 +230,13 @@
       transition: transform 0.3s, border-color 0.3s;
     }
     .timeline-item:hover {
-      transform: translateX(4px);
       border-color: var(--teal);
+    }
+    .timeline-item:nth-child(odd):hover {
+      transform: translateX(4px);
+    }
+    .timeline-item:nth-child(even):hover {
+      transform: translateX(-4px);
     }
     .timeline-item:nth-child(odd) {
       margin-left: 0;
@@ -248,12 +253,14 @@
       top: 1.5rem;
     }
     .timeline-item:nth-child(odd) .timeline-dot {
-      right: -8%;
-      transform: translateX(50%);
+      right: -13px;
+      transform: none;
+      top: 1.5rem;
     }
     .timeline-item:nth-child(even) .timeline-dot {
-      left: -8%;
-      transform: translateX(-50%);
+      left: -13px;
+      transform: none;
+      top: 1.5rem;
     }
     .timeline-date {
       font-size: 0.8rem;
@@ -309,6 +316,7 @@
       border: 1px solid rgba(0,212,255,0.3);
       color: var(--teal);
     }
+    /* TODO(Task 7): add mobile responsive styles for .timeline */
   </style>
 </head>
 <body>
@@ -464,7 +472,7 @@
           <div class="timeline-role">Professional Software Developer</div>
           <div class="timeline-company">Capgemini</div>
           <div class="timeline-location"><i class="fa-solid fa-location-dot"></i> Chennai, India</div>
-          <ul class="timeline-bullets">
+          <ul class="timeline-bullets" role="list">
             <li>Built ETL pipelines processing 500K+ records daily using Python and SQL</li>
             <li>Reduced system latency by 20% through query optimization and indexing</li>
             <li>Decreased reconciliation errors by 15% via automated data validation</li>
@@ -485,7 +493,7 @@
           <div class="timeline-role">Software Developer</div>
           <div class="timeline-company">Cango Networks</div>
           <div class="timeline-location"><i class="fa-solid fa-location-dot"></i> Chennai, India</div>
-          <ul class="timeline-bullets">
+          <ul class="timeline-bullets" role="list">
             <li>Developed reporting dashboards that reduced reporting time by 30%</li>
             <li>Improved data consistency and reduced inconsistencies by 18%</li>
             <li>Built automated data pipelines for real-time network monitoring</li>
