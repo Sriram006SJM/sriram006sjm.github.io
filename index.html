@@ -203,6 +203,112 @@
       background: linear-gradient(90deg, var(--teal), var(--gold));
       transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    /* ── Timeline / Experience ───────────────────────────────── */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 2px;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, var(--teal), var(--gold));
+    }
+    .timeline-item {
+      width: 45%;
+      position: relative;
+      padding: 1.5rem;
+      background: rgba(0,212,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 3rem;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .timeline-item:hover {
+      transform: translateX(4px);
+      border-color: var(--teal);
+    }
+    .timeline-item:nth-child(odd) {
+      margin-left: 0;
+    }
+    .timeline-item:nth-child(even) {
+      margin-left: 55%;
+    }
+    .timeline-dot {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid var(--bg);
+      top: 1.5rem;
+    }
+    .timeline-item:nth-child(odd) .timeline-dot {
+      right: -8%;
+      transform: translateX(50%);
+    }
+    .timeline-item:nth-child(even) .timeline-dot {
+      left: -8%;
+      transform: translateX(-50%);
+    }
+    .timeline-date {
+      font-size: 0.8rem;
+      color: var(--teal);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-role {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .timeline-company {
+      font-size: 0.95rem;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-location {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .timeline-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+    }
+    .timeline-bullets li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.2rem 0 0.2rem 1.2rem;
+      position: relative;
+    }
+    .timeline-bullets li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+    }
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .metric-chip {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--teal);
+    }
   </style>
 </head>
 <body>
@@ -337,6 +443,56 @@
           <div class="skill-item">
             <div class="skill-label">Root Cause Analysis <span>Expert</span></div>
             <div class="skill-bar"><div class="skill-fill" style="--w:93%"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section fade-in">
+    <div class="container">
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
+      <div class="timeline">
+
+        <!-- Item 1: Capgemini (odd — left) -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Jun 2022 – Jul 2024</div>
+          <div class="timeline-role">Professional Software Developer</div>
+          <div class="timeline-company">Capgemini</div>
+          <div class="timeline-location"><i class="fa-solid fa-location-dot"></i> Chennai, India</div>
+          <ul class="timeline-bullets">
+            <li>Built ETL pipelines processing 500K+ records daily using Python and SQL</li>
+            <li>Reduced system latency by 20% through query optimization and indexing</li>
+            <li>Decreased reconciliation errors by 15% via automated data validation</li>
+            <li>Cut clarification cycles by 25% through improved data schemas and documentation</li>
+          </ul>
+          <div class="metrics-row">
+            <span class="metric-chip">500K+ Records</span>
+            <span class="metric-chip">20% Latency ↓</span>
+            <span class="metric-chip">15% Fewer Errors</span>
+            <span class="metric-chip">25% Fewer Cycles</span>
+          </div>
+        </div>
+
+        <!-- Item 2: Cango Networks (even — right) -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Sep 2021 – Mar 2022</div>
+          <div class="timeline-role">Software Developer</div>
+          <div class="timeline-company">Cango Networks</div>
+          <div class="timeline-location"><i class="fa-solid fa-location-dot"></i> Chennai, India</div>
+          <ul class="timeline-bullets">
+            <li>Developed reporting dashboards that reduced reporting time by 30%</li>
+            <li>Improved data consistency and reduced inconsistencies by 18%</li>
+            <li>Built automated data pipelines for real-time network monitoring</li>
+          </ul>
+          <div class="metrics-row">
+            <span class="metric-chip">30% Faster Reports</span>
+            <span class="metric-chip">18% Fewer Inconsistencies</span>
           </div>
         </div>
 
