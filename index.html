@@ -81,7 +81,161 @@
     }
     .nav-links a:hover { color: var(--teal); text-decoration: none; }
 
-    @media (max-width: 640px) { .nav-links { display: none; } }
+    .nav-links a.active { color: var(--teal); }
+    .nav-links a.active::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+      margin-top: 2px;
+    }
+
+    /* ── Hamburger (mobile) ──────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: rgba(10,15,30,0.97);
+      border-top: 1px solid var(--border);
+      padding: 0.5rem 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s, background 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--teal); background: rgba(0,212,255,0.05); text-decoration: none; }
+
+    /* ── Custom cursor ───────────────────────────────────────── */
+    .cursor-dot, .cursor-ring {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--teal);
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1.5px solid rgba(0,212,255,0.5);
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s, transform 0.08s;
+    }
+    .cursor-ring.hover {
+      width: 48px; height: 48px;
+      border-color: var(--teal);
+      background: rgba(0,212,255,0.06);
+    }
+    @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
+
+    /* ── Back to top ─────────────────────────────────────────── */
+    .back-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: var(--bg);
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 200;
+      box-shadow: 0 4px 16px rgba(0,212,255,0.3);
+    }
+    .back-top.visible { opacity: 1; transform: translateY(0); }
+    .back-top:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,212,255,0.4); }
+
+    /* ── Scroll progress bar ─────────────────────────────────── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      z-index: 9998;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Ripple on buttons ───────────────────────────────────── */
+    .btn-primary, .btn-secondary, .contact-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transform: scale(0);
+      animation: ripple-anim 0.5s linear;
+      pointer-events: none;
+    }
+    @keyframes ripple-anim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* ── Stat counters strip ─────────────────────────────────── */
+    .stats-strip {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+    .stats-strip-inner {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num-big {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--teal);
+      line-height: 1;
+      display: block;
+    }
+    .stat-num-big.gold { color: var(--gold); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Tilt cards ──────────────────────────────────────────── */
+    .tilt { transform-style: preserve-3d; transform: perspective(800px); }
+
+    @media (max-width: 640px) { .nav-links { display: none; } .hamburger { display: flex; } }
 
     /* ── Hero ────────────────────────────────────────────────── */
     #hero {
@@ -685,6 +839,12 @@
   </style>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
 
   <!-- NAV -->
   <nav>
@@ -699,6 +859,18 @@
         <li><a href="#certifications">Certifications</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#skills" onclick="closeMobile()">Skills</a>
+      <a href="#experience" onclick="closeMobile()">Experience</a>
+      <a href="#projects" onclick="closeMobile()">Projects</a>
+      <a href="#hackathons" onclick="closeMobile()">Hackathons</a>
+      <a href="#education" onclick="closeMobile()">Education</a>
+      <a href="#certifications" onclick="closeMobile()">Certifications</a>
+      <a href="#contact" onclick="closeMobile()">Contact</a>
     </div>
   </nav>
 
@@ -731,6 +903,38 @@
     </div>
     <div class="scroll-hint"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></div>
   </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stats-strip-inner">
+        <div class="stat-item">
+          <span class="stat-num-big" data-target="4">0</span>
+          <div class="stat-label">API Versions</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num-big" data-target="38">0</span>
+          <div class="stat-label">Passing Tests</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num-big gold" data-target="6.6" data-suffix="M">0</span>
+          <div class="stat-label">Rows Ingested Daily</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num-big" data-target="1000" data-suffix="+">0</span>
+          <div class="stat-label">Monte Carlo Simulations</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num-big gold" data-target="3.92">0</span>
+          <div class="stat-label">GPA</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num-big" data-target="3">0</span>
+          <div class="stat-label">Competition Awards</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SKILLS -->
   <section id="skills" class="section">
@@ -1124,7 +1328,7 @@
   </footer>
 
   <script>
-    // IntersectionObserver for fade-in
+    // ── Fade-in + skill bars ──────────────────────────────────────
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => {
         if (e.isIntersecting) {
@@ -1139,7 +1343,7 @@
     );
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Typewriter
+    // ── Typewriter ────────────────────────────────────────────────
     const roles = ['Data Analyst', 'ML Engineer', 'BI Specialist', 'Data Scientist', 'Analytics Engineer'];
     let ri = 0, ci = 0, deleting = false;
     const tw = document.getElementById('typewriter-text');
@@ -1152,6 +1356,111 @@
       setTimeout(type, delay);
     }
     type();
+
+    // ── Custom cursor ─────────────────────────────────────────────
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx+'px'; dot.style.top = my+'px'; });
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx+'px';
+      ring.style.top  = ry+'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button, .project-card, .hack-card, .cert-card, .skill-group, .timeline-item')
+      .forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+      });
+
+    // ── Scroll progress + back-to-top + active nav ────────────────
+    const progressBar = document.getElementById('scrollProgress');
+    const backTop     = document.getElementById('backTop');
+    const navLinks    = document.querySelectorAll('.nav-links a');
+    const sections    = document.querySelectorAll('section[id]');
+
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      progressBar.style.width = pct + '%';
+      backTop.classList.toggle('visible', window.scrollY > 400);
+
+      // Active nav highlight
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    });
+
+    // ── Hamburger mobile menu ─────────────────────────────────────
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // ── Animated counters ─────────────────────────────────────────
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        counterObs.unobserve(e.target);
+        const el     = e.target;
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const isFloat = target % 1 !== 0;
+        const duration = 1400;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          const val = target * ease;
+          el.textContent = (isFloat ? val.toFixed(2) : Math.round(val)) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = (isFloat ? target.toFixed(2) : target) + suffix;
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-num-big[data-target]').forEach(el => counterObs.observe(el));
+
+    // ── Ripple on buttons ─────────────────────────────────────────
+    document.querySelectorAll('.btn-primary, .btn-secondary, .contact-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+        btn.appendChild(r);
+        setTimeout(() => r.remove(), 600);
+      });
+    });
+
+    // ── 3D card tilt ──────────────────────────────────────────────
+    document.querySelectorAll('.project-card, .hack-card, .cert-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // ── Hero parallax ─────────────────────────────────────────────
+    const heroGrid = document.querySelector('.hero-grid');
+    window.addEventListener('scroll', () => {
+      if (heroGrid) heroGrid.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+    }, { passive: true });
   </script>
 </body>
 </html>
